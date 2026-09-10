@@ -20,14 +20,19 @@ Checked: September 10, 2026
 ## External status
 
 - Public landing page: https://backup-power-finder.pages.dev
+- GitHub repository: https://github.com/sholts2026/backup-power-finder-mcp
+- Production service: https://backup-power-finder-mcp.onrender.com
+- Production MCP endpoint: https://backup-power-finder-mcp.onrender.com/mcp
+- Render Blueprint ID: `exs-dah6u9e1egvs73cs22gg`
+- Render service ID: `srv-dah6uj1t0dsc73er4urg`
+- Production smoke test passed on September 10, 2026: health, privacy, terms, tool listing, and recommendation call.
 - EcoFlow Awin application: pending approval.
 - BLUETTI Awin application: pending approval.
 - Affiliate tracking remains disabled until an approval is received.
 
 ## Next actions
 
-1. Create the `backup-power-finder-mcp` GitHub repository and push this directory.
-2. Create the Render service from `render.yaml`.
-3. Verify the production MCP, privacy, terms, support, and challenge URLs.
-4. Connect the production MCP endpoint in OpenAI Platform and run the eight reviewer cases.
-5. Submit after identity verification and Apps Management permissions are confirmed.
+1. Complete the OpenAI draft's app information and verified developer identity.
+2. Connect the production MCP endpoint and run the eight reviewer cases.
+3. Record and host the required demo video.
+4. Submit after all preview checks pass.
