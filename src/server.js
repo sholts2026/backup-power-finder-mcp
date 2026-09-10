@@ -1,4 +1,5 @@
 import http from "node:http";
+import { readFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import { loadProducts } from "./catalogs.js";
 import { buildAffiliateUrl, trackClick } from "./affiliate.js";
@@ -176,6 +177,17 @@ export function createServer() {
 
       if (req.method === "GET" && url.pathname === "/demo") {
         sendText(res, 200, demoPage(), "text/html; charset=utf-8");
+        return;
+      }
+
+      if (req.method === "GET" && url.pathname === "/demo-recording.mp4") {
+        const recording = await readFile(new URL("../assets/backup-power-finder-demo.mp4", import.meta.url));
+        res.writeHead(200, {
+          "Content-Type": "video/mp4",
+          "Content-Length": recording.length,
+          "Cache-Control": "public, max-age=86400"
+        });
+        res.end(recording);
         return;
       }
 
