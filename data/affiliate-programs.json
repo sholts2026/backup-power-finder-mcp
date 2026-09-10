@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-09-10",
+  "programs": [
+    {
+      "merchant": "EcoFlow",
+      "network": "Awin",
+      "status": "awin_pending_approval",
+      "affiliateEnabled": false,
+      "nextAction": "Wait for approval, then confirm current commission, cookie, deep-link rules, and feed access in the signed agreement."
+    },
+    {
+      "merchant": "BLUETTI",
+      "network": "Awin",
+      "status": "awin_pending_approval",
+      "affiliateEnabled": false,
+      "nextAction": "Wait for approval, then confirm current commission, cookie, product feed, and promotional restrictions in the signed agreement."
+    }
+  ]
+}

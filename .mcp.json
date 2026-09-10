@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "backup-power-finder": {
+      "type": "http",
+      "url": "https://backup-power-finder-mcp.onrender.com/mcp"
+    }
+  }
+}

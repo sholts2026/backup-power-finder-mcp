@@ -1,0 +1,20 @@
+{
+  "ecoflow": {
+    "name": "EcoFlow",
+    "category": "backup_power",
+    "affiliateNetwork": "Awin / direct",
+    "commission": "Confirm in approved agreement",
+    "cookieDays": null,
+    "feedStatus": "Request approved feed or deep-link access after approval",
+    "baseUrl": "https://us.ecoflow.com"
+  },
+  "bluetti": {
+    "name": "BLUETTI",
+    "category": "backup_power",
+    "affiliateNetwork": "Awin",
+    "commission": "Confirm in approved agreement",
+    "cookieDays": null,
+    "feedStatus": "Import the approved Awin data feed after approval",
+    "baseUrl": "https://www.bluettipower.com"
+  }
+}

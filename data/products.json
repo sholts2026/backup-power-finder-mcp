@@ -1,0 +1,98 @@
+[
+  {
+    "sku": "ecoflow-delta-2-max",
+    "merchant": "ecoflow",
+    "category": "backup_power",
+    "name": "EcoFlow DELTA 2 Max",
+    "price": 1199,
+    "priceUnit": "typical_sale",
+    "aov": 1199,
+    "commissionWeight": 0.9,
+    "url": "https://us.ecoflow.com/products/delta-2-max-portable-power-station",
+    "image": "https://us.ecoflow.com/favicon.ico",
+    "attributes": {
+      "capacityWh": 2048,
+      "continuousWatts": 2400,
+      "surgeWatts": 4800,
+      "solarInputWatts": 1000,
+      "batteryChemistry": "LFP",
+      "weightLb": 50,
+      "expandable": true,
+      "indoorSafeBattery": true,
+      "useCases": ["home_backup", "rv", "camping"],
+      "ports": ["ac", "usb-a", "usb-c", "dc"]
+    }
+  },
+  {
+    "sku": "ecoflow-delta-3-plus",
+    "merchant": "ecoflow",
+    "category": "backup_power",
+    "name": "EcoFlow DELTA 3 Plus",
+    "price": 649,
+    "priceUnit": "typical_sale",
+    "aov": 649,
+    "commissionWeight": 0.86,
+    "url": "https://us.ecoflow.com/products/delta-3-plus-portable-power-station",
+    "image": "https://us.ecoflow.com/favicon.ico",
+    "attributes": {
+      "capacityWh": 1024,
+      "continuousWatts": 1800,
+      "surgeWatts": 3600,
+      "solarInputWatts": 1000,
+      "batteryChemistry": "LFP",
+      "weightLb": 27,
+      "expandable": true,
+      "indoorSafeBattery": true,
+      "useCases": ["apartment", "camping", "rv"],
+      "ports": ["ac", "usb-a", "usb-c", "dc"]
+    }
+  },
+  {
+    "sku": "bluetti-ac180",
+    "merchant": "bluetti",
+    "category": "backup_power",
+    "name": "BLUETTI AC180",
+    "price": 699,
+    "priceUnit": "typical_sale",
+    "aov": 699,
+    "commissionWeight": 0.95,
+    "url": "https://www.bluettipower.com/products/ac180",
+    "image": "https://www.bluettipower.com/favicon.ico",
+    "attributes": {
+      "capacityWh": 1152,
+      "continuousWatts": 1800,
+      "surgeWatts": 2700,
+      "solarInputWatts": 500,
+      "batteryChemistry": "LFP",
+      "weightLb": 37,
+      "expandable": false,
+      "indoorSafeBattery": true,
+      "useCases": ["apartment", "camping", "home_backup"],
+      "ports": ["ac", "usb-a", "usb-c", "dc"]
+    }
+  },
+  {
+    "sku": "bluetti-ac200l",
+    "merchant": "bluetti",
+    "category": "backup_power",
+    "name": "BLUETTI AC200L",
+    "price": 1299,
+    "priceUnit": "typical_sale",
+    "aov": 1299,
+    "commissionWeight": 0.96,
+    "url": "https://www.bluettipower.com/products/ac200l",
+    "image": "https://www.bluettipower.com/favicon.ico",
+    "attributes": {
+      "capacityWh": 2048,
+      "continuousWatts": 2400,
+      "surgeWatts": 3600,
+      "solarInputWatts": 1200,
+      "batteryChemistry": "LFP",
+      "weightLb": 62,
+      "expandable": true,
+      "indoorSafeBattery": true,
+      "useCases": ["home_backup", "rv", "camping"],
+      "ports": ["ac", "usb-a", "usb-c", "dc"]
+    }
+  }
+]

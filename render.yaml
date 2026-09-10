@@ -1,0 +1,20 @@
+# Stable HTTPS MCP endpoint for OpenAI app submission.
+services:
+  - type: web
+    name: backup-power-finder-mcp
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8790
+      - key: PUBLISHED_APP
+        value: backup-power-finder
+      - key: PUBLIC_BASE_URL
+        value: https://backup-power-finder-mcp.onrender.com
+      - key: REQUIRE_AFFILIATE_PRODUCTS
+        value: "false"
+      - key: OPENAI_APPS_CHALLENGE_TOKEN
+        sync: false
+      - key: AFFILIATE_CONFIG_JSON
+        sync: false

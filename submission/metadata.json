@@ -1,0 +1,29 @@
+{
+  "name": "Backup Power Finder",
+  "short_description": "Compare portable battery power stations by runtime, device load, solar, portability, and budget.",
+  "long_description": "Backup Power Finder helps shoppers choose portable battery power stations and solar generator bundles for outages, apartments, camping, and RV use. It models runtime from device load, filters by budget and power requirements, ranks 3-5 suitable options, explains tradeoffs, and includes safety notes and clear affiliate disclosure before outbound shopping links.",
+  "category": "retail_and_shopping",
+  "audience_min_age": 13,
+  "example_prompts": [
+    "Find a portable power station for a fridge, router, and lights during a 12-hour outage.",
+    "Compare apartment backup batteries under $1,200.",
+    "What solar generator should I get for camping with a cooler and CPAP?",
+    "Find a lightweight power station for weekend car camping under $700.",
+    "Compare EcoFlow and BLUETTI options for RV use."
+  ],
+  "tools": [
+    "recommend_backup_power"
+  ],
+  "server_url": "https://backup-power-finder-mcp.onrender.com/mcp",
+  "auth": "noauth",
+  "support_contact": "sholtsman29@gmail.com",
+  "website_url": "https://backup-power-finder.pages.dev",
+  "privacy_policy_url": "https://backup-power-finder-mcp.onrender.com/privacy",
+  "terms_url": "https://backup-power-finder-mcp.onrender.com/terms",
+  "logo_path": "assets/backup-power-finder.png",
+  "affiliate_disclosure": "Backup Power Finder may earn a commission when users buy through partner links. Recommendations rank user fit first.",
+  "country_availability": [
+    "US"
+  ],
+  "review_notes": "The production deployment exposes only recommend_backup_power. Runtime values are labeled estimates. Affiliate tracking must remain disabled until each merchant approves the publisher account."
+}

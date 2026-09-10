@@ -1,0 +1,37 @@
+{
+  "backup-power-finder": {
+    "proposedName": "Backup Power Finder",
+    "targetKeyword": "best portable power station for home backup",
+    "category": "Retail and Shopping",
+    "shortDescription": "Compare portable battery power stations by runtime, device load, solar, portability, and budget.",
+    "longDescription": "Backup Power Finder helps shoppers compare portable battery power stations and solar generator bundles using the details that decide real purchases: devices to run, wattage load, outage duration, solar charging needs, apartment or RV constraints, portability, battery chemistry, expandable capacity, and budget.",
+    "keywords": [
+      "portable power station",
+      "solar generator",
+      "home backup power",
+      "battery generator",
+      "power outage backup",
+      "rv power station",
+      "camping power station",
+      "cpap battery backup",
+      "hurricane backup power",
+      "backup power finder"
+    ],
+    "starterPrompts": [
+      "Find a portable power station for a fridge, router, and lights during a 12-hour outage.",
+      "Compare apartment backup batteries under $1,200.",
+      "What solar generator should I get for camping with a cooler and CPAP?",
+      "Find a lightweight power station for weekend car camping under $700.",
+      "Compare EcoFlow and BLUETTI options for RV use."
+    ],
+    "discoveryQueries": [
+      "best portable power station for home backup",
+      "solar generator for refrigerator during power outage",
+      "best battery generator for apartment",
+      "cpap battery backup for camping",
+      "EcoFlow vs BLUETTI comparison"
+    ],
+    "affiliateDisclosure": "Backup Power Finder may earn a commission when users buy through partner links. Recommendations rank user fit first.",
+    "safetyPolicy": "Only recommend battery power stations and solar generator bundles for indoor use. Never recommend indoor use of fuel-burning generators. Runtime is an estimate. For medical devices such as CPAP machines, tell users to verify requirements with the device manufacturer or clinician."
+  }
+}

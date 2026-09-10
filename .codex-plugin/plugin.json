@@ -1,0 +1,37 @@
+{
+  "name": "backup-power-finder-submit",
+  "version": "1.0.0",
+  "description": "Fit-first portable battery power station recommendations for outages, apartments, camping, and RV use.",
+  "author": {
+    "name": "AI Product Finders",
+    "email": "sholtsman29@gmail.com",
+    "url": "https://backup-power-finder.pages.dev"
+  },
+  "license": "UNLICENSED",
+  "keywords": [
+    "backup-power",
+    "portable-power-station",
+    "solar-generator",
+    "shopping",
+    "affiliate"
+  ],
+  "mcpServers": "./.mcp.json",
+  "apps": "./.app.json",
+  "interface": {
+    "displayName": "Backup Power Finder",
+    "shortDescription": "Compare battery power stations by runtime, load, portability, solar, and budget.",
+    "longDescription": "Backup Power Finder ranks portable battery power stations for outages, apartments, camping, and RV use. It models runtime from device load, explains tradeoffs, and clearly discloses affiliate links.",
+    "developerName": "AI Product Finders",
+    "category": "Retail and Shopping",
+    "capabilities": [
+      "Interactive",
+      "MCP"
+    ],
+    "defaultPrompt": [
+      "Find a portable power station for a fridge and router during a 12-hour outage.",
+      "Compare apartment backup batteries under $1,200.",
+      "Find a solar generator for camping with a CPAP."
+    ],
+    "brandColor": "#0F766E"
+  }
+}

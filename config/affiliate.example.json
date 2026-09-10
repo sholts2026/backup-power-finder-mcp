@@ -1,0 +1,18 @@
+{
+  "ecoflow": {
+    "enabled": false,
+    "affiliateUrlTemplate": "PASTE_APPROVED_AWIN_OR_DIRECT_DEEP_LINK_TEMPLATE",
+    "partnerId": "",
+    "network": "Awin / direct",
+    "status": "pending_approval",
+    "notes": "Keep disabled until EcoFlow approves AI Product Finders. Replace with the approved template and confirm deep-link rules."
+  },
+  "bluetti": {
+    "enabled": false,
+    "affiliateUrlTemplate": "PASTE_APPROVED_AWIN_DEEP_LINK_TEMPLATE",
+    "partnerId": "",
+    "network": "Awin",
+    "status": "pending_approval",
+    "notes": "Keep disabled until BLUETTI approves AI Product Finders. Replace with the approved template and import the approved data feed."
+  }
+}

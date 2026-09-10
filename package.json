@@ -1,0 +1,14 @@
+{
+  "name": "backup-power-finder",
+  "version": "1.0.0",
+  "description": "Backup Power Finder MCP server for ChatGPT app submission.",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "import:feed": "node scripts/import-feed.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

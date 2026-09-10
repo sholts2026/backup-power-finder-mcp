@@ -1,0 +1,37 @@
+{
+  "defaults": {
+    "category": "backup_power",
+    "priceUnit": "current_price",
+    "commissionWeight": 0.5,
+    "attributes": {
+      "capacityWh": 0,
+      "continuousWatts": 0,
+      "surgeWatts": 0,
+      "solarInputWatts": 0,
+      "batteryChemistry": "unknown",
+      "weightLb": 0,
+      "expandable": false,
+      "indoorSafeBattery": true,
+      "useCases": [],
+      "ports": []
+    }
+  },
+  "fields": {
+    "sku": ["sku", "id", "product_id", "productId"],
+    "merchant": ["merchant", "advertiser", "brand"],
+    "name": ["name", "product_name", "title"],
+    "price": ["price", "sale_price", "current_price"],
+    "url": ["url", "product_url", "link", "deeplink"],
+    "image": ["image", "image_url", "thumbnail"],
+    "capacityWh": ["capacity_wh", "capacity", "battery_capacity_wh"],
+    "continuousWatts": ["continuous_watts", "rated_output_w", "ac_output_w"],
+    "surgeWatts": ["surge_watts", "peak_output_w"],
+    "solarInputWatts": ["solar_input_watts", "max_solar_input_w"],
+    "batteryChemistry": ["battery_chemistry", "cell_chemistry"],
+    "weightLb": ["weight_lb", "product_weight_lb"],
+    "expandable": ["expandable", "extra_battery_supported"],
+    "indoorSafeBattery": ["indoor_safe_battery", "battery_only"],
+    "useCases": ["use_cases", "applications", "tags"],
+    "ports": ["ports", "outlets", "connectors"]
+  }
+}
