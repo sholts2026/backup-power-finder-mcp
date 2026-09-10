@@ -59,6 +59,56 @@ function page(title, body) {
 </html>`;
 }
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function demoPage() {
+  const query = "Find portable backup power for a fridge and router during a 12-hour outage under $1,500";
+  const result = recommend("backup-power-finder", { query, limit: 3 });
+  const cards = result.recommendations.map((product, index) => {
+    const runtime = product.runtime?.estimatedHours
+      ? `${product.runtime.estimatedHours} modeled hours at ${product.runtime.modeledLoadWatts}W`
+      : "Runtime depends on the connected load";
+    const reasons = product.reasons.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("");
+    return `<article class="result">
+      <p class="rank">${index + 1}</p>
+      <div>
+        <h2>${escapeHtml(product.name)}</h2>
+        <p class="meta">${escapeHtml(product.merchant)} &middot; $${escapeHtml(product.price)} &middot; Fit score ${escapeHtml(product.score)}/100</p>
+        <p><strong>Estimated runtime:</strong> ${escapeHtml(runtime)}</p>
+        <ul>${reasons}</ul>
+        <p><a href="${escapeHtml(product.redirectPath)}">View merchant offer</a></p>
+      </div>
+    </article>`;
+  }).join("");
+
+  return page("Backup Power Finder Demo", `
+<header>
+  <p class="eyebrow">Interactive app demo</p>
+  <h1>Backup Power Finder</h1>
+  <p class="lead">A shopper asks one practical question. The app models the load, enforces the budget, and explains three purchase-ready options.</p>
+</header>
+<main>
+  <section class="panel query">
+    <p class="label">Shopper request</p>
+    <p>${escapeHtml(query)}</p>
+    <p class="answer">Three ranked recommendations</p>
+  </section>
+  <section class="panel">${cards}</section>
+  <section class="panel">
+    <h2>Important safety note</h2>
+    <p>${escapeHtml(result.intent.disclaimers[0])}</p>
+    <p class="disclosure">We may earn a commission if you buy through a merchant link. Rankings are based on shopper fit first.</p>
+  </section>
+</main>`);
+}
+
 function homePage() {
   const isMattress = publishedApp === "mattress-finder";
   const isBackupPower = publishedApp === "backup-power-finder";
@@ -121,6 +171,11 @@ export function createServer() {
 
       if (req.method === "GET" && url.pathname === "/") {
         sendText(res, 200, homePage(), "text/html; charset=utf-8");
+        return;
+      }
+
+      if (req.method === "GET" && url.pathname === "/demo") {
+        sendText(res, 200, demoPage(), "text/html; charset=utf-8");
         return;
       }
 
