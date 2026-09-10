@@ -73,7 +73,7 @@ function demoPage() {
   const result = recommend("backup-power-finder", { query, limit: 3 });
   const cards = result.recommendations.map((product, index) => {
     const runtime = product.runtime?.estimatedHours
-      ? `${product.runtime.estimatedHours} modeled hours at ${product.runtime.modeledLoadWatts}W`
+      ? `${product.runtime.estimatedHours} modeled hours at ${product.runtime.loadWatts}W`
       : "Runtime depends on the connected load";
     const reasons = product.reasons.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("");
     return `<article class="result">
