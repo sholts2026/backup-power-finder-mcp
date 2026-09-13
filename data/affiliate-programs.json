@@ -11,9 +11,81 @@
     {
       "merchant": "BLUETTI",
       "network": "Awin",
-      "status": "awin_pending_approval",
+      "status": "awin_approved_joined",
+      "affiliateEnabled": true,
+      "verified": {
+        "advertiserId": "59271",
+        "publisherId": "3068771",
+        "commission": "Tiered 5%-10%",
+        "cookieDays": 30,
+        "autoValidationDays": 45,
+        "averagePaymentDays": 66,
+        "estimatedAov": "$1,000+",
+        "feedOrApi": "966 products over 2 feeds; last updated today",
+        "appTracking": false,
+        "region": "United States of America"
+      },
+      "restrictions": [
+        "No BLUETTI trademark bidding without written approval",
+        "No direct linking in paid traffic",
+        "Only authorized coupon codes",
+        "FTC disclosure required"
+      ],
+      "nextAction": "Import the approved Awin feed, verify product deep links, and deploy the affiliate configuration after testing redirects."
+    },
+    {
+      "merchant": "Jackery US",
+      "network": "Awin",
+      "status": "ready_to_apply",
       "affiliateEnabled": false,
-      "nextAction": "Wait for approval, then confirm current commission, cookie, product feed, and promotional restrictions in the signed agreement."
+      "officialUrl": "https://ui.awin.com/merchant-profile/59183/commission-groups",
+      "verified": {
+        "cookieDays": 30,
+        "commission": "Program terms state commission varies by referral-site type and new vs existing customer; exact rate requires joining the current Awin program.",
+        "feedOrApi": "Awin publisher tools and merchant data access are subject to approval.",
+        "restrictions": "No brand-term PPC; coupon codes require pre-approval; no commission for refurbished or reconditioned products."
+      },
+      "nextAction": "Apply in Awin, then confirm commission groups, deep-link rules, product feed access, and US eligibility."
+    },
+    {
+      "merchant": "Goal Zero",
+      "network": "Partnerize",
+      "status": "ready_to_apply",
+      "affiliateEnabled": false,
+      "officialUrl": "https://goalzero.com/en-ca/pages/affiliate-marketing-program",
+      "verified": {
+        "commission": "Up to 10% on all products, per the current program page.",
+        "estimatedAov": "$600+ average order value, per the current program page.",
+        "cookieDays": 30,
+        "feedOrApi": "Automated product feed available to approved partners."
+      },
+      "nextAction": "Apply through Partnerize as an individual creator or business and confirm US campaign availability."
+    },
+    {
+      "merchant": "Anker US",
+      "network": "Direct / affiliate networks",
+      "status": "ready_to_apply",
+      "affiliateEnabled": false,
+      "officialUrl": "https://www.anker.com/become-an-affiliate",
+      "verified": {
+        "commission": "8% on transactions, per the current Anker affiliate page.",
+        "cookieDays": 30,
+        "feedOrApi": "Affiliate tools include banners, text links, and data feeds; access is subject to program approval."
+      },
+      "nextAction": "Apply and confirm which Anker power-station SKUs are commissionable and which network supplies the tracking links."
+    },
+    {
+      "merchant": "Amazon US",
+      "network": "Amazon Associates",
+      "status": "ready_to_apply",
+      "affiliateEnabled": false,
+      "officialUrl": "https://associates.amazon.com/signup",
+      "verified": {
+        "commission": "Amazon advertises up to 10% across qualifying purchases and programs; category-specific rates must be checked in the current Commission Income Statement.",
+        "feedOrApi": "The current operating agreement references linking tools, APIs, and data feeds for approved associates.",
+        "cookieDays": "Confirm the current qualifying-purchase window in the agreement before implementation."
+      },
+      "nextAction": "Apply only after the public site and app traffic profile are ready; then request/use approved Product Advertising API or feed access."
     }
   ]
 }

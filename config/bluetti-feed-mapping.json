@@ -1,0 +1,37 @@
+{
+  "defaults": {
+    "category": "backup_power",
+    "priceUnit": "current_price",
+    "commissionWeight": 0.9,
+    "attributes": {
+      "capacityWh": 0,
+      "continuousWatts": 0,
+      "surgeWatts": 0,
+      "solarInputWatts": 0,
+      "batteryChemistry": "unknown",
+      "weightLb": 0,
+      "expandable": false,
+      "indoorSafeBattery": true,
+      "useCases": [],
+      "ports": []
+    }
+  },
+  "fields": {
+    "sku": ["id", "gtin", "mpn"],
+    "merchant": ["brand", "advertiser_name"],
+    "name": ["title"],
+    "price": ["sale_price", "price"],
+    "url": ["link", "aw_deep_link"],
+    "image": ["image_link"],
+    "capacityWh": ["capacity_wh"],
+    "continuousWatts": ["rated_output_w"],
+    "surgeWatts": ["peak_output_w"],
+    "solarInputWatts": ["max_solar_input_w"],
+    "batteryChemistry": ["battery_chemistry"],
+    "weightLb": ["product_weight_lb"],
+    "expandable": ["expandable"],
+    "indoorSafeBattery": ["battery_only"],
+    "useCases": ["use_cases"],
+    "ports": ["ports"]
+  }
+}

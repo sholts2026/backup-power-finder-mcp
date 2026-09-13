@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { execPath } from "node:process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { gunzipSync } from "node:zlib";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -66,7 +67,10 @@ function parseCsv(text) {
 }
 
 function parseInput(path) {
-  const text = readFileSync(path, "utf8");
+  const buffer = readFileSync(path);
+  const text = path.toLowerCase().endsWith(".gz")
+    ? gunzipSync(buffer).toString("utf8")
+    : buffer.toString("utf8");
   if (path.toLowerCase().endsWith(".json")) {
     const payload = JSON.parse(text);
     return Array.isArray(payload) ? payload : payload.products ?? payload.items ?? [];
@@ -118,6 +122,34 @@ function normalize(row, merchant, category, mapping) {
   attributes.useCases = listValue(firstValue(row, fields.useCases), attributes.useCases);
   attributes.ports = listValue(firstValue(row, fields.ports), attributes.ports);
 
+  const searchableText = [
+    row.title,
+    row.description,
+    row.product_detail,
+    row.product_highlight,
+    row.product_type
+  ].filter(Boolean).join(" ").replaceAll(",", "");
+  const inferNumber = (pattern, current) => {
+    if (current) return current;
+    const match = searchableText.match(pattern);
+    return match ? numberValue(match[1], current) : current;
+  };
+  attributes.capacityWh = inferNumber(/(\d{3,5})\s*Wh\b/i, attributes.capacityWh);
+  attributes.continuousWatts = inferNumber(/(?:continuous|rated|output)\D{0,24}(\d{3,5})\s*W\b/i, attributes.continuousWatts);
+  attributes.surgeWatts = inferNumber(/(?:surge|peak)\D{0,24}(\d{3,5})\s*W\b/i, attributes.surgeWatts);
+  attributes.solarInputWatts = inferNumber(/(?:solar input|max(?:imum)? solar)\D{0,24}(\d{2,5})\s*W\b/i, attributes.solarInputWatts);
+  attributes.weightLb = inferNumber(/(?:weight|weighs?)\D{0,16}(\d{1,3}(?:\.\d+)?)\s*(?:lb|lbs|pounds)\b/i, attributes.weightLb);
+  if (attributes.batteryChemistry === "unknown" && /\b(?:LFP|LiFePO4|LiFePO₄)\b/i.test(searchableText)) attributes.batteryChemistry = "LFP";
+  if (!attributes.expandable && /expandable|extra battery|expansion battery/i.test(searchableText)) attributes.expandable = true;
+  if (!attributes.useCases.length) {
+    const useCases = [];
+    if (/home backup|home emergency|outage|refrigerator|fridge/i.test(searchableText)) useCases.push("home_backup");
+    if (/\bRV\b|van life|camper/i.test(searchableText)) useCases.push("rv");
+    if (/camping|outdoor|off-grid/i.test(searchableText)) useCases.push("camping");
+    if (/apartment|indoor/i.test(searchableText)) useCases.push("apartment");
+    attributes.useCases = useCases;
+  }
+
   const rawSku = firstValue(row, fields.sku) ?? `${merchant}-${firstValue(row, fields.name) ?? "product"}`;
   const price = numberValue(firstValue(row, fields.price), defaults.price ?? 0);
 
@@ -127,7 +159,7 @@ function normalize(row, merchant, category, mapping) {
     category,
     name: String(firstValue(row, fields.name) ?? rawSku),
     price,
-    priceUnit: defaults.priceUnit ?? "monthly_estimate",
+    priceUnit: defaults.priceUnit ?? "current_price",
     aov: price || defaults.aov || 0,
     commissionWeight: defaults.commissionWeight ?? 0.5,
     url: String(firstValue(row, fields.url) ?? ""),
@@ -140,7 +172,15 @@ const options = parseArgs();
 const mappingPath = resolve(options.mapping ?? "config/feed-mapping.example.json");
 const mapping = JSON.parse(readFileSync(mappingPath, "utf8"));
 const inputRows = parseInput(resolve(options.input));
-const normalized = inputRows.map((row) => normalize(row, options.merchant, options.category ?? mapping.defaults?.category ?? "backup_power", mapping));
+const titlePattern = options["title-regex"] ? new RegExp(options["title-regex"], "i") : null;
+const excludePattern = options["exclude-regex"] ? new RegExp(options["exclude-regex"], "i") : null;
+const filteredRows = (titlePattern
+  ? inputRows.filter((row) => titlePattern.test([row.title, row.description, row.product_detail, row.product_highlight, row.product_type].filter(Boolean).join(" ")))
+  : inputRows).filter((row) => {
+    if (!excludePattern) return true;
+    return !excludePattern.test([row.title, row.description, row.product_detail, row.product_highlight, row.product_type].filter(Boolean).join(" "));
+  });
+const normalized = filteredRows.map((row) => normalize(row, options.merchant, options.category ?? mapping.defaults?.category ?? "backup_power", mapping));
 const outputPath = resolve(options.out ?? "data/products.imported.json");
 
 let output = normalized;
@@ -153,4 +193,4 @@ if (options.merge) {
 }
 
 writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
-console.log(`Imported ${normalized.length} products to ${outputPath}`);
+console.log(`Imported ${normalized.length} products to ${outputPath}${titlePattern || excludePattern ? ` (filtered from ${inputRows.length})` : ""}`);

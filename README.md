@@ -22,7 +22,7 @@ Deploy with `render.yaml`. The intended production endpoint is:
 https://backup-power-finder-mcp.onrender.com/mcp
 ```
 
-Set `AFFILIATE_CONFIG_JSON` only after a merchant approves the publisher account. EcoFlow and BLUETTI applications were pending in Awin on September 10, 2026, so their affiliate templates remain disabled.
+Set `AFFILIATE_CONFIG_JSON` with the approved BLUETTI Awin configuration after testing redirects. BLUETTI US is joined for publisher `3068771` (advertiser `59271`); EcoFlow remains rejected and disabled.
 
 ## Review endpoints
 

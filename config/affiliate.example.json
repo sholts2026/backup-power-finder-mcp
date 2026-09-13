@@ -8,11 +8,12 @@
     "notes": "Keep disabled until EcoFlow approves AI Product Finders. Replace with the approved template and confirm deep-link rules."
   },
   "bluetti": {
-    "enabled": false,
-    "affiliateUrlTemplate": "PASTE_APPROVED_AWIN_DEEP_LINK_TEMPLATE",
-    "partnerId": "",
+    "enabled": true,
+    "affiliateUrlTemplate": "https://www.awin1.com/cread.php?awinmid=59271&awinaffid=3068771&clickref={clickId}&campaign={appId}&ued={encodedDestinationUrl}",
+    "partnerId": "3068771",
+    "advertiserId": "59271",
     "network": "Awin",
-    "status": "pending_approval",
-    "notes": "Keep disabled until BLUETTI approves AI Product Finders. Replace with the approved template and import the approved data feed."
+    "status": "approved_joined",
+    "notes": "Joined BLUETTI US on September 10, 2026. Awin shows 5%-10% tiered commission, 30-day cookie, 45-day auto-validation, average payment time 66 days, AOV $1,000+, and 966 products across 2 feeds updated today. No BLUETTI trademark bidding without written approval, no direct linking in paid traffic, authorized coupons only, FTC disclosure required."
   }
 }
