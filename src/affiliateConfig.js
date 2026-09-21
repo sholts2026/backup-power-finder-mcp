@@ -12,9 +12,14 @@ export function loadAffiliateConfig() {
   return JSON.parse(readFileSync(configPath, "utf8"));
 }
 
+export function hasAffiliateTemplate(product) {
+  const merchantConfig = loadAffiliateConfig()[product.merchant];
+  return Boolean(merchantConfig?.enabled && merchantConfig.affiliateUrlTemplate);
+}
+
 export function applyAffiliateTemplate(product, appId, clickId) {
   const merchantConfig = loadAffiliateConfig()[product.merchant];
-  if (!merchantConfig?.enabled || !merchantConfig.affiliateUrlTemplate) return null;
+  if (!hasAffiliateTemplate(product)) return null;
 
   const destinationUrl = product.url ?? "";
 

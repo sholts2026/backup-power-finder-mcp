@@ -13,7 +13,7 @@ services:
       - key: PUBLIC_BASE_URL
         value: https://backup-power-finder-mcp.onrender.com
       - key: REQUIRE_AFFILIATE_PRODUCTS
-        value: "false"
+        value: "true"
       - key: OPENAI_APPS_CHALLENGE_TOKEN
         sync: false
       - key: AFFILIATE_CONFIG_JSON

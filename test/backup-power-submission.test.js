@@ -60,6 +60,28 @@ test("home-outage request returns structured runtime comparisons", () => {
   assert.match(result.presentation.disclosure, /commission/);
 });
 
+test("published deployment only recommends merchants with active affiliate tracking", () => {
+  const previousPublishedApp = process.env.PUBLISHED_APP;
+  const previousAffiliateRequirement = process.env.REQUIRE_AFFILIATE_PRODUCTS;
+  process.env.PUBLISHED_APP = "backup-power-finder";
+  delete process.env.REQUIRE_AFFILIATE_PRODUCTS;
+
+  const result = recommend("backup-power-finder", {
+    query: "portable power station for a fridge and router during a 12 hour outage",
+    limit: 3,
+    includePresentation: false
+  });
+
+  assert.ok(result.recommendations.length > 0);
+  assert.ok(result.recommendations.every((item) => ["BLUETTI", "EcoFlow"].includes(item.merchant)));
+  assert.ok(result.recommendations.every((item) => item.buyUrl.includes("www.awin1.com/cread.php")));
+
+  if (previousPublishedApp === undefined) delete process.env.PUBLISHED_APP;
+  else process.env.PUBLISHED_APP = previousPublishedApp;
+  if (previousAffiliateRequirement === undefined) delete process.env.REQUIRE_AFFILIATE_PRODUCTS;
+  else process.env.REQUIRE_AFFILIATE_PRODUCTS = previousAffiliateRequirement;
+});
+
 test("apartment request prioritizes indoor battery guidance", () => {
   const result = recommend("backup-power-finder", {
     query: "quiet indoor apartment backup under $900"
