@@ -1,4 +1,5 @@
 import { recommend } from "./apps.js";
+import { trackEvent } from "./analytics.js";
 
 const recommendationOutputSchema = {
   type: "object",
@@ -120,6 +121,19 @@ function allowedTools() {
   return toolDefinitions.filter((tool) => isToolAllowed(tool.name));
 }
 
+function trackRecommendation(appId, tool, args, result) {
+  try {
+    trackEvent("mcp_invocation", { appId, tool, hasBudget: args.budget !== undefined });
+    trackEvent("recommendations_shown", {
+      appId,
+      tool,
+      count: result.recommendations?.length ?? 0,
+      merchants: [...new Set((result.recommendations ?? []).map((item) => item.merchant))]
+    });
+  } catch {
+    // Analytics must never affect a shopper recommendation.
+  }
+}
 export function handleMcpRequest(message) {
   if (Array.isArray(message)) {
     return message.filter((item) => item.id !== undefined).map((item) => handleMcpRequest(item));
@@ -179,6 +193,7 @@ export function handleMcpRequest(message) {
     }
 
     const result = recommend(appId, args);
+    trackRecommendation(appId, name, args, result);
     return {
       jsonrpc: "2.0",
       id: message.id,
@@ -195,3 +210,4 @@ export function handleMcpRequest(message) {
     error: { code: -32601, message: `Unknown method: ${message.method}` }
   };
 }
+
