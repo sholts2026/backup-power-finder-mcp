@@ -15,8 +15,9 @@ const publicBaseUrl = process.env.PUBLIC_BASE_URL ?? `http://localhost:${port}`;
 const analyticsTokenHash = process.env.ANALYTICS_TOKEN_SHA256 ?? "50f110c8ab195bc9693952637607dfd98c6d6e171241403391e5c3fbadd5ea83";
 
 function isAuthorizedMetricsRequest(req) {
+  const headerToken = req.headers["x-analytics-token"];
   const authorization = req.headers.authorization ?? "";
-  const suppliedToken = authorization.startsWith("Bearer ") ? authorization.slice(7) : "";
+  const suppliedToken = (Array.isArray(headerToken) ? headerToken[0] : headerToken) ?? (authorization.startsWith("Bearer ") ? authorization.slice(7) : "");
   if (!suppliedToken) return false;
 
   if (process.env.ANALYTICS_TOKEN) {
@@ -351,6 +352,7 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
     console.log(`Commerce Finder listening on http://localhost:${port}`);
   });
 }
+
 
 
 
