@@ -20,9 +20,6 @@ function isAuthorizedMetricsRequest(req) {
   const suppliedToken = (Array.isArray(headerToken) ? headerToken[0] : headerToken) ?? (authorization.startsWith("Bearer ") ? authorization.slice(7) : "");
   if (!suppliedToken) return false;
 
-  if (process.env.ANALYTICS_TOKEN) {
-    return suppliedToken === process.env.ANALYTICS_TOKEN;
-  }
 
   if (!analyticsTokenHash) return false;
   const suppliedHash = createHash("sha256").update(suppliedToken).digest("hex");
@@ -352,6 +349,7 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
     console.log(`Commerce Finder listening on http://localhost:${port}`);
   });
 }
+
 
 
 
