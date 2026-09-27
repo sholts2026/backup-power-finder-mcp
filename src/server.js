@@ -1,3 +1,4 @@
+import { createHash, timingSafeEqual } from "node:crypto";
 import http from "node:http";
 import { readFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
@@ -11,6 +12,23 @@ import { loadSubmission } from "./submissions.js";
 const port = Number(process.env.PORT ?? 8790);
 const publishedApp = process.env.PUBLISHED_APP;
 const publicBaseUrl = process.env.PUBLIC_BASE_URL ?? `http://localhost:${port}`;
+const analyticsTokenHash = process.env.ANALYTICS_TOKEN_SHA256 ?? "50f110c8ab195bc9693952637607dfd98c6d6e171241403391e5c3fbadd5ea83";
+
+function isAuthorizedMetricsRequest(req) {
+  const authorization = req.headers.authorization ?? "";
+  const suppliedToken = authorization.startsWith("Bearer ") ? authorization.slice(7) : "";
+  if (!suppliedToken) return false;
+
+  if (process.env.ANALYTICS_TOKEN) {
+    return suppliedToken === process.env.ANALYTICS_TOKEN;
+  }
+
+  if (!analyticsTokenHash) return false;
+  const suppliedHash = createHash("sha256").update(suppliedToken).digest("hex");
+  const expected = Buffer.from(analyticsTokenHash, "hex");
+  const actual = Buffer.from(suppliedHash, "hex");
+  return expected.length === actual.length && timingSafeEqual(expected, actual);
+}
 
 function visibleAppEntries() {
   const entries = Object.entries(appProfiles);
@@ -249,12 +267,7 @@ Support contact: sholtsman29@gmail.com
       }
 
       if (req.method === "GET" && url.pathname === "/metrics") {
-        const token = process.env.ANALYTICS_TOKEN;
-        if (!token) {
-          sendJson(res, 404, { error: "Not found" });
-          return;
-        }
-        if (req.headers.authorization !== `Bearer ${token}`) {
+        if (!isAuthorizedMetricsRequest(req)) {
           sendJson(res, 401, { error: "Unauthorized" });
           return;
         }
@@ -338,4 +351,5 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
     console.log(`Commerce Finder listening on http://localhost:${port}`);
   });
 }
+
 
