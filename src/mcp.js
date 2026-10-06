@@ -157,7 +157,7 @@ export function handleMcpRequest(message) {
         protocolVersion: message.params?.protocolVersion ?? "2025-06-18",
         capabilities: { tools: {} },
         serverInfo: { name: process.env.PUBLISHED_APP ?? "commerce-finder", version: "1.0.0" },
-        instructions: "Provide fit-first product comparisons, label runtime as an estimate, disclose affiliate relationships, and direct safety-critical questions to manufacturers or qualified professionals."
+        instructions: "Provide fit-first product comparisons using only known catalog facts. Ask targeted follow-up questions when devices/load, runtime, budget, or country are missing. Label runtime as a modeled estimate, never invent prices, discounts, specs, stock, compatibility, or battery capacity, disclose affiliate relationships, and direct safety-critical or medical-device questions to manufacturers or qualified professionals. Explain why the top product ranks above alternatives."
       }
     };
   }

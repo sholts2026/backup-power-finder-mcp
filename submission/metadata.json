@@ -25,5 +25,6 @@
   "country_availability": [
     "US"
   ],
-  "review_notes": "The production deployment exposes only recommend_backup_power. Runtime values are labeled estimates. Affiliate tracking must remain disabled until each merchant approves the publisher account."
+  "review_notes": "OpenAI approved Backup Power Finder (v1.0.0) on September 25, 2026. The production deployment exposes only recommend_backup_power. Runtime values are labeled estimates. Affiliate tracking is enabled only for approved Awin partner configurations; unapproved merchants remain disabled until approval and written terms are confirmed.",
+  "developer_name": "AI Product Finders"
 }

@@ -41,6 +41,7 @@ function publicProduct(product, appId, scoreResult, merchant, rank, tags) {
     priceUnit: product.priceUnit,
     score: scoreResult.score,
     reasons: scoreResult.reasons,
+    confidence: scoreResult.score >= 80 ? "high" : scoreResult.score >= 60 ? "medium" : "low",
     runtime: scoreResult.runtime,
     buyUrl: buildAffiliateUrl(product, appId),
     redirectPath: buildRedirectPath(product, appId, { rank, intentTags: tags }),
@@ -59,17 +60,18 @@ export function recommend(appId, payload = {}) {
   const merchants = loadMerchants();
   const tags = intentTags(intent);
   const requireAffiliateProducts = process.env.REQUIRE_AFFILIATE_PRODUCTS !== "false" && Boolean(process.env.PUBLISHED_APP);
-  const recommendations = getProductsByCategory(profile.category)
+  const canRecommend = intent.readyToRecommend !== false;
+  const recommendations = canRecommend ? getProductsByCategory(profile.category)
     .filter((product) => !intent.budget || product.price <= intent.budget)
     .filter((product) => !requireAffiliateProducts || hasAffiliateTemplate(product))
     .map((product) => {
       const scoreResult = profile.scorer(product, intent);
       return { product, scoreResult };
     })
-    .filter(({ scoreResult }) => scoreResult.score >= 35)
-    .sort((a, b) => b.scoreResult.score - a.scoreResult.score)
+    .filter(({ scoreResult }) => !scoreResult.excluded && scoreResult.score >= 35)
+    .sort((a, b) => (b.scoreResult.score - a.scoreResult.score) || ((b.scoreResult.commercialTieBreaker ?? 0) - (a.scoreResult.commercialTieBreaker ?? 0)))
     .slice(0, payload.limit ?? 3)
-    .map(({ product, scoreResult }, index) => publicProduct(product, appId, scoreResult, merchants[product.merchant], index + 1, tags));
+    .map(({ product, scoreResult }, index) => publicProduct(product, appId, scoreResult, merchants[product.merchant], index + 1, tags)) : [];
 
   const result = {
     appId,
@@ -77,6 +79,8 @@ export function recommend(appId, payload = {}) {
     intent,
     recommendations,
     nextQuestions: buildNextQuestions(appId, intent),
+    recommendationMode: recommendations.length ? (intent.confidence === "high" ? "ranked" : "tentative") : "needs_more_info",
+    unknowns: intent.missingInfo ?? [],
     productCount: loadProducts().filter((product) => product.category === profile.category).length
   };
 
@@ -126,11 +130,13 @@ function buildNextQuestions(appId, intent) {
   }
 
   if (appId === "backup-power-finder") {
-    return [
-      intent.devices.length ? null : "Which devices do you need to run, and for how many hours?",
-      intent.wantsSolar ? null : "Do you want solar-panel charging or battery-only backup?",
-      "Is portability more important than maximum runtime?"
-    ].filter(Boolean);
+    const questions = [];
+    if (!intent.devices.length && !intent.loadWatts) questions.push("Which devices do you need to run, or what is the total watt load?");
+    if (!intent.desiredHours) questions.push("How many hours of backup runtime do you want?");
+    if (!intent.budget) questions.push("What budget should I stay under?");
+    if (!intent.country) questions.push("What country or market are you shopping in?");
+    if (!intent.wantsSolar) questions.push("Do you want solar-panel charging or battery-only backup?");
+    return questions.slice(0, 3);
   }
 
   return [

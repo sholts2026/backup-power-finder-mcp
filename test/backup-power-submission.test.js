@@ -3,10 +3,15 @@ import { execFileSync } from "node:child_process";
 import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { test } from "node:test";
 import { recommend } from "../src/apps.js";
+import { hasAffiliateTemplate } from "../src/affiliateConfig.js";
+import { loadProducts } from "../src/catalogs.js";
 import { handleMcpRequest } from "../src/mcp.js";
 import { loadSubmission } from "../src/submissions.js";
+
+const packageRoot = fileURLToPath(new URL("../", import.meta.url));
 
 test("submission metadata is complete and discovery-focused", () => {
   const metadata = JSON.parse(readFileSync(new URL("../submission/metadata.json", import.meta.url), "utf8"));
@@ -82,6 +87,15 @@ test("published deployment only recommends merchants with active affiliate track
   else process.env.REQUIRE_AFFILIATE_PRODUCTS = previousAffiliateRequirement;
 });
 
+test("every backup-power merchant in the feed has an active affiliate template", () => {
+  const missing = loadProducts()
+    .filter((product) => product.category === "backup_power")
+    .filter((product) => !hasAffiliateTemplate(product))
+    .map((product) => `${product.merchant}:${product.sku}`);
+
+  assert.deepEqual(missing, []);
+});
+
 test("apartment request prioritizes indoor battery guidance", () => {
   const result = recommend("backup-power-finder", {
     query: "quiet indoor apartment backup under $900"
@@ -144,7 +158,7 @@ test("affiliate feed importer normalizes backup-power fields", () => {
     "--merchant", "ecoflow",
     "--category", "backup_power",
     "--out", output
-  ], { cwd: process.cwd(), stdio: "pipe" });
+  ], { cwd: packageRoot, stdio: "pipe" });
 
   const [product] = JSON.parse(readFileSync(output, "utf8"));
   assert.equal(product.category, "backup_power");

@@ -16,5 +16,14 @@
     "cookieDays": null,
     "feedStatus": "Import the approved Awin data feed after approval",
     "baseUrl": "https://www.bluettipower.com"
+  },
+  "bluetti-us": {
+    "name": "BLUETTI",
+    "category": "backup_power",
+    "affiliateNetwork": "Awin",
+    "commission": "5%-10% tiered",
+    "cookieDays": 30,
+    "feedStatus": "Imported from approved BLUETTI US Awin feed; key kept as alias for feed rows",
+    "baseUrl": "https://www.bluettipower.com"
   }
 }

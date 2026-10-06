@@ -3,7 +3,7 @@ function clampScore(value) {
 }
 
 function budgetScore(price, budget) {
-  if (!budget) return 12;
+  if (!budget) return 8;
   if (price <= budget) return 20;
   const overage = (price - budget) / budget;
   return Math.max(0, 20 - overage * 40);
@@ -138,7 +138,7 @@ export function estimateBackupRuntime(product, intent) {
   const loadWatts = intent.loadWatts ?? (intent.devices?.length
     ? intent.devices.reduce((sum, device) => sum + (DEVICE_WATTS[device] ?? 0), 0)
     : 250);
-  const usableWh = attributes.capacityWh * 0.85;
+  const usableWh = Math.max(attributes.capacityWh ?? 0, 0) * 0.85;
   return {
     loadWatts,
     estimatedHours: Math.round((usableWh / Math.max(loadWatts, 1)) * 10) / 10,
@@ -148,6 +148,14 @@ export function estimateBackupRuntime(product, intent) {
 
 export function scoreBackupPower(product, intent) {
   const attributes = product.attributes;
+  if (!attributes.capacityWh || !attributes.continuousWatts) {
+    return {
+      score: 0,
+      excluded: true,
+      reasons: ["missing verified capacity or continuous-wattage data"]
+    };
+  }
+
   const runtime = estimateBackupRuntime(product, intent);
   let score = 0;
   const reasons = [];
@@ -174,13 +182,18 @@ export function scoreBackupPower(product, intent) {
   if (intent.wantsSolar && attributes.solarInputWatts >= 400) {
     score += 12;
     reasons.push(`${attributes.solarInputWatts}W solar input for faster recharging`);
+  } else if (intent.wantsSolar && !attributes.solarInputWatts) {
+    score -= 8;
+    reasons.push("solar input not verified in catalog");
   } else if (!intent.wantsSolar) {
     score += 4;
   }
 
-  if (intent.portabilityPriority && attributes.weightLb <= 40) {
+  if (intent.portabilityPriority && attributes.weightLb > 0 && attributes.weightLb <= 40) {
     score += 10;
     reasons.push(`${attributes.weightLb} lb portable design`);
+  } else if (intent.portabilityPriority && !attributes.weightLb) {
+    reasons.push("weight not verified in catalog");
   } else if (!intent.portabilityPriority && attributes.useCases.includes(intent.useCase)) {
     score += 8;
     reasons.push(`good fit for ${intent.useCase.replaceAll("_", " ")}`);
@@ -202,10 +215,10 @@ export function scoreBackupPower(product, intent) {
   }
 
   score += budgetScore(product.price, intent.budget);
-  score += product.commissionWeight * 4;
 
   return {
     score: clampScore(score),
+    commercialTieBreaker: product.commissionWeight ?? 0,
     reasons: reasons.slice(0, 5),
     runtime
   };

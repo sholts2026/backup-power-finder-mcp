@@ -59,6 +59,10 @@ function extractWatts(text, fallback) {
   return wattMatch ? Number(wattMatch[1]) : fallback;
 }
 
+function hasBudget(text, overrides) {
+  return overrides.budget !== undefined || /(?:under|below|less than|max|budget|\$\d{2,5})/i.test(text);
+}
+
 export function parsePetFoodIntent(query = "", overrides = {}) {
   const text = query.toLowerCase();
   return {
@@ -107,22 +111,36 @@ export function parseBackupPowerIntent(query = "", overrides = {}) {
     ...(includesAny(text, BACKUP_POWER_SYNONYMS.microwave) ? ["microwave"] : [])
   ];
 
+  const budget = overrides.budget ?? extractBudget(text, null);
+  const desiredHours = overrides.desiredHours ?? extractHours(text, includesAny(text, BACKUP_POWER_SYNONYMS.outage) ? 12 : null);
+  const loadWatts = overrides.loadWatts ?? extractWatts(text, null);
+  const missingInfo = [
+    devices.length || loadWatts ? null : "devices or load watts",
+    desiredHours ? null : "target runtime hours",
+    hasBudget(text, overrides) ? null : "budget",
+    overrides.country || /\b(us|usa|united states)\b/i.test(text) ? null : "country or market"
+  ].filter(Boolean);
+
   return {
     appId: "backup-power-finder",
     query,
-    budget: overrides.budget ?? extractBudget(text, 1500),
+    budget,
     useCase: overrides.useCase ?? (
       includesAny(text, BACKUP_POWER_SYNONYMS.rv) ? "rv" :
       includesAny(text, BACKUP_POWER_SYNONYMS.camping) ? "camping" :
       includesAny(text, BACKUP_POWER_SYNONYMS.apartment) ? "apartment" :
       "home_backup"
     ),
-    desiredHours: overrides.desiredHours ?? extractHours(text, includesAny(text, BACKUP_POWER_SYNONYMS.outage) ? 12 : 8),
-    loadWatts: overrides.loadWatts ?? extractWatts(text, null),
+    desiredHours: desiredHours ?? 8,
+    loadWatts,
     devices,
+    country: overrides.country ?? (/\b(us|usa|united states)\b/i.test(text) ? "US" : null),
     wantsSolar: overrides.wantsSolar ?? includesAny(text, BACKUP_POWER_SYNONYMS.solar),
     portabilityPriority: overrides.portabilityPriority ?? includesAny(text, BACKUP_POWER_SYNONYMS.portable),
     quietIndoorPriority: overrides.quietIndoorPriority ?? (includesAny(text, BACKUP_POWER_SYNONYMS.quiet) || includesAny(text, BACKUP_POWER_SYNONYMS.apartment)),
+    missingInfo,
+    readyToRecommend: missingInfo.length <= 3,
+    confidence: missingInfo.length === 0 ? "high" : missingInfo.length <= 2 ? "medium" : "low",
     disclaimers: [
       "Shopping guidance only. Use battery power stations indoors, never fuel-burning generators. Verify final specs, pricing, and safe operation with the merchant before purchase.",
       "For medical devices such as CPAP machines, confirm backup requirements with the device manufacturer or clinician."

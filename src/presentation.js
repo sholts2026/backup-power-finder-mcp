@@ -24,10 +24,12 @@ function mattressSummary(intent, recommendations) {
 
 function backupPowerSummary(intent, recommendations) {
   const top = recommendations[0];
-  if (!top) return "I could not find a strong fit from the current catalog.";
+  if (!top) return `I need a little more information before ranking backup power stations: ${(intent.missingInfo ?? []).join(", ") || "devices, runtime, budget, or market"}.`;
 
   const runtime = top.runtime?.estimatedHours ? ` with an estimated ${top.runtime.estimatedHours} hours at the modeled load` : "";
-  return `${top.name} is the best current fit for ${intent.useCase.replaceAll("_", " ")} around $${intent.budget}${runtime}.`;
+  const budget = intent.budget ? ` around $${intent.budget}` : "";
+  const confidence = intent.confidence === "high" ? "best current fit" : "tentative current fit";
+  return `${top.name} is the ${confidence} for ${intent.useCase.replaceAll("_", " ")}${budget}${runtime}. Runtime is modeled, not guaranteed.`;
 }
 
 export function buildPresentation(appId, result) {
@@ -48,6 +50,7 @@ export function buildPresentation(appId, result) {
       merchant: product.merchant,
       price: formatPrice(product),
       fitScore: product.score,
+      confidence: product.confidence,
       bullets: product.reasons,
       runtime: product.runtime,
       callToAction: {
@@ -62,10 +65,18 @@ export function buildPresentation(appId, result) {
       merchant: product.merchant,
       price: formatPrice(product),
       fitScore: product.score,
+      confidence: product.confidence,
       estimatedRuntime: product.runtime?.estimatedHours ?? null,
       bestFor: product.reasons.slice(0, 2).join(", ")
     })),
     followUpQuestions: result.nextQuestions,
+    unknowns: result.unknowns,
+    beforeBuying: appId === "backup-power-finder" ? [
+      "Confirm current price, availability, and included accessories.",
+      "Verify continuous watts, surge watts, battery capacity, and solar input on the merchant page.",
+      "Check that the product supports your exact devices and runtime needs.",
+      "Use battery power stations indoors only as directed; never use fuel-burning generators indoors."
+    ] : [],
     disclosure: submission?.affiliateDisclosure,
     safety: submission?.safetyPolicy
   };

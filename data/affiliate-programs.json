@@ -1,12 +1,17 @@
 {
-  "checkedAt": "2026-09-10",
+  "checkedAt": "2026-09-23",
   "programs": [
     {
       "merchant": "EcoFlow",
       "network": "Awin",
-      "status": "awin_pending_approval",
-      "affiliateEnabled": false,
-      "nextAction": "Wait for approval, then confirm current commission, cookie, deep-link rules, and feed access in the signed agreement."
+      "status": "awin_approved_joined_dashboard_verified",
+      "affiliateEnabled": true,
+      "verified": {
+        "advertiserId": "59181",
+        "publisherId": "3068771",
+        "trackingTemplateConfigured": true
+      },
+      "nextAction": "EcoFlow was verified as Joined in the Awin dashboard on September 23, 2026. Awin/Payoneer payment setup was approved and USD payouts are configured through Payoneer international wire; re-check once any Payoneer verification banner settles."
     },
     {
       "merchant": "BLUETTI",
@@ -21,7 +26,7 @@
         "autoValidationDays": 45,
         "averagePaymentDays": 66,
         "estimatedAov": "$1,000+",
-        "feedOrApi": "966 products over 2 feeds; last updated today",
+        "feedOrApi": "879 products over 2 feeds; last updated today",
         "appTracking": false,
         "region": "United States of America"
       },
@@ -31,7 +36,7 @@
         "Only authorized coupon codes",
         "FTC disclosure required"
       ],
-      "nextAction": "Import the approved Awin feed, verify product deep links, and deploy the affiliate configuration after testing redirects."
+      "nextAction": "BLUETTI was verified as Joined in the Awin dashboard on September 23, 2026. Keep both bluetti and bluetti-us feed keys mapped to the approved Awin template. Awin/Payoneer payment setup was approved and USD payouts are configured through Payoneer international wire; re-check once any Payoneer verification banner settles."
     },
     {
       "merchant": "Jackery US",
