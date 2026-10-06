@@ -4,3 +4,4 @@ config/affiliate.json
 .DS_Store
 coverage/
 clicks.jsonl
+analytics.jsonl
